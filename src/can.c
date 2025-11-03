@@ -56,7 +56,7 @@ static void send_task(void *params)
         msg.data32[0] = 0x01234567;
         msg.data32[1] = 0x89abcdef;
         can2040_transmit(&cbus, &msg);
-        vTaskDelay(1000);
+        busy_wait_us_32(300);
     }
 }
 
@@ -65,7 +65,7 @@ static void recv_task(void *params)
     while (1) {
         struct can2040_msg msg;
         xQueueReceive(queue, &msg, portMAX_DELAY);
-        printf("received message: id=%d dlc=%d data32[0]=%d data32[1]=%d\n", msg.id, msg.dlc, msg.data32[0], msg.data32[1]);
+        printf("received message: id=%d dlc=%d data32[0]=%x data32[1]=%x\n", msg.id, msg.dlc, msg.data32[0], msg.data32[1]);
     }
 }
 
